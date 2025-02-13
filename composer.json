@@ -72,8 +72,13 @@
         "post-update-cmd": [
             "@auto-scripts"
         ],
-        "fix": "php-cs-fixer fix",
-        "stan": "phpstan analyse"
+        "fix": "php-cs-fixer fix --ansi --verbose",
+        "stan": "phpstan analyse --ansi",
+        "tests": [
+            "phpunit --colors=always",
+            "@fix",
+            "@stan"
+        ]
     },
     "conflict": {
         "symfony/symfony": "*"
