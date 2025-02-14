@@ -17,7 +17,7 @@ class AppFixtures extends Fixture
             'username' => 'admin',
         ]);
 
-        // UserFactory::createMany(10);
+        UserFactory::createMany(2);
 
         $manager->flush();
     }
