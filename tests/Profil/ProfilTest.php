@@ -73,7 +73,6 @@ class ProfilTest extends ApiTestCase
             'headers' => ['Content-Type' => 'application/ld+json'],
             'json' => [
                 'email' => 'email@domaine.fr',
-                'username' => 'email',
             ],
         ]);
 
