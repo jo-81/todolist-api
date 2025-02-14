@@ -9,12 +9,13 @@ use App\State\MeStateProcessor;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
 use ApiPlatform\Metadata\ApiResource;
+use App\State\ResetPasswordStateProcessor;
 use ApiPlatform\Symfony\Action\NotFoundAction;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\HasLifecycleCallbacks]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
@@ -28,6 +29,12 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
             security: "is_granted('ROLE_USER')",
             processor: MeStateProcessor::class,
             denormalizationContext: ['groups' => ['user:write-edit']]
+        ),
+        new Put(
+            uriTemplate: '/reset-password',
+            security: "is_granted('ROLE_USER')",
+            processor: ResetPasswordStateProcessor::class,
+            denormalizationContext: ['groups' => ['user:write-edit-password']]
         ),
         new Get(
             controller: NotFoundAction::class,
@@ -75,6 +82,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['user:read'])]
     private ?\DateTimeImmutable $createdAt = null;
 
+    #[Groups(['user:write-edit-password'])]
     private ?string $plainPassword = null;
 
     public function getId(): ?int
